@@ -16,6 +16,7 @@
           </tr>
           </div>
         </table>
+        <%= render 'layouts/errors', obj: book %>
         <div class="new-comment">
           <%= form_with(model:[@book, @Book_comment], local: true) do |f| %>
             <%= f.text_area :comment, rows:'4', cols:"80",placeholder: "コメント" %>
