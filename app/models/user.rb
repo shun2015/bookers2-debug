@@ -7,23 +7,21 @@ class User < ApplicationRecord
   has_many :books, dependent: :destroy
   has_many :book_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
-  # foreign_key（FK）には、@user.xxxとした際に「@user.idがfollower_idなのかfollowed_idなのか」を指定
-  has_many :follower, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy 
-  has_many :followed, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy 
-  # @user.booksのように、@user.xxxで、そのユーザがフォローしている人orフォローされている人の一覧を出したい
-  has_many :following_user, through: :follower, source: :followed 
-  has_many :follower_user, through: :followed, source: :follower 
-
+  has_many :following_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+  has_many :follower_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
+  has_many :following, through: :following_relationships, source: :followed
+  has_many :followers, through: :follower_relationships, source: :follower
+  
   def follow(user_id)
-    follower.create(followed_id: user_id)
+      following_relationships.create(followed_id: user_id)
   end
-  
+
   def unfollow(user_id)
-    follower.find_by(followed_id: user_id).destroy
+    following_relationships.find_by(followed_id: user_id).destroy
   end
-  
+
   def following?(user)
-    following_user.include?(user)
+    following.include?(user)
   end
   
   attachment :profile_image, destroy: false

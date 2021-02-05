@@ -1,6 +1,6 @@
-<table class='table'>
-  <h1>Follower Users</h1>
-  <% if @users.present? %>
+<h1>Follow Users</h1>
+<% if @users.present? %>
+  <table class='table'>
       <tr>
         <th>image</th>
         <th>name</th>
@@ -10,7 +10,7 @@
       </tr>
       <% @users.each do |user| %>
         <tr>
-          <td><%= attachment_image_tag(user, :profile_image, :fill, 35, 35, fallback: "no-image-icon.jpg") %></td>
+          <td><%= attachment_image_tag(user, :profile_image, :fill, 40, 40, fallback: "no-image-icon.jpg") %></td>
           <td><%= user.name %></td>
           <td>フォロー数:<%= user.following.count %></td>
           <td>フォロワー数:<%= user.followers.count %></td>
