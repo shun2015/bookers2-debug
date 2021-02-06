@@ -11,7 +11,7 @@ class User < ApplicationRecord
   has_many :follower_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
   has_many :following, through: :following_relationships, source: :followed
   has_many :followers, through: :follower_relationships, source: :follower
-  
+
   def follow(user_id)
       following_relationships.create(followed_id: user_id)
   end
@@ -23,7 +23,7 @@ class User < ApplicationRecord
   def following?(user)
     following.include?(user)
   end
-  
+
   attachment :profile_image, destroy: false
 
   validates :name, length: {maximum: 20, minimum: 2}, uniqueness: true
