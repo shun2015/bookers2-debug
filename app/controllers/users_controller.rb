@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :ensure_correct_user, only: [:update, :edit]
+  before_action :configure_sign_up_params, only: [:create]
 
   def index
     @user_all = User.all
@@ -49,4 +50,11 @@ class UsersController < ApplicationController
       redirect_to user_path(current_user)
     end
   end
+  
+  protected
+ 
+  def configure_sign_up_params
+   devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+  end
+  
 end

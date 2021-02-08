@@ -34,7 +34,13 @@ class User < ApplicationRecord
   def prefecture_name=(prefecture_name)
     self.prefecture_code = JpPrefecture::Prefecture.find(name: prefecture_name).code
   end
-
+  # user新規作成メール送信
+  after_create :send_welcome_mail
+ 
+  def send_welcome_mail
+    UserMailer.user_welcome_mail(self).deliver
+  end
+  
   attachment :profile_image, destroy: false
 
   validates :name, length: {maximum: 20, minimum: 2}, uniqueness: true
